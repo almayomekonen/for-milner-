@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { FaUser } from "react-icons/fa";
+import { FaCamera, FaUser } from "react-icons/fa";
 import AuthContext from "../context/AuthContext";
 
 export default function ProfilePage() {
@@ -24,6 +24,19 @@ export default function ProfilePage() {
               <div className="w-32 h-32 rounded-full border-4 border-white bg-gray-200 flex items-center justify-center text-gray-400">
                 <FaUser className="h-20 w-20" />
               </div>
+
+              <label
+                htmlFor="profile-image-upload"
+                className="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 text-white rounded-full cursor-pointer p-2"
+              >
+                <FaCamera className="h-4 w-4" />
+                <input
+                  type="file"
+                  id="profile-image-upload"
+                  accept="image/*"
+                  className="hidden"
+                />
+              </label>
             </div>
 
             <div className="mt-16">
@@ -37,7 +50,9 @@ export default function ProfilePage() {
               <div className="mt-2 flex flex-wrap gap-2">
                 <span className="bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded-full">
                   {currentUser.languages &&
-                    currentUser.languages.map((lang) => <span>{lang}</span>)}
+                    currentUser.languages.map((lang, index) => (
+                      <span key={index}>{lang}, </span>
+                    ))}
                 </span>
               </div>
 

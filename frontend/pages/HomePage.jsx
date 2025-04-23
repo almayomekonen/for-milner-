@@ -83,6 +83,27 @@ export default function HomePage() {
       </section>
 
       {/* section  x2 */}
+
+      <section>
+        <h1>Student Featured Posts...</h1>
+      </section>
+
+      <section className="py-16 bg-gradient-to-r from-indigo-600 to-purple-700 text-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-4">Join our Global Community</h2>
+          <p>
+            Share your experiences, connect with others, and explore different
+            culturs from around the world.
+          </p>
+
+          <Link
+            to="/register"
+            className="inline-block bg-white text-indigo-700 hover:bg-gray-200 cursor-pointer px-6 py-3 rounded-md font-medium text-lg mt-2"
+          >
+            Sign Up Now!
+          </Link>
+        </div>
+      </section>
     </>
   );
 }

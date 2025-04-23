@@ -8,6 +8,6 @@ routes.post("/register", register);
 
 routes.post("/login", login);
 
-routes.post("/me", guard, getCurrentUser);
+routes.get("/me", guard, getCurrentUser);
 
 module.exports = routes;

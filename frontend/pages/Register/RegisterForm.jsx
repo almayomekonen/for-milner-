@@ -1,4 +1,11 @@
-export default function RegisterForm({ onChange, formData, countries }) {
+export default function RegisterForm({
+  onChange,
+  formData,
+  countries,
+  onTogglePassword,
+  showPasswordProp,
+  passwordMatch,
+}) {
   return (
     <>
       {/* full name */}
@@ -55,9 +62,9 @@ export default function RegisterForm({ onChange, formData, countries }) {
         >
           Password
         </label>
-        <div className="mt-1">
+        <div className="mt-1 relative">
           <input
-            type="password"
+            type={showPasswordProp ? "text" : "password"}
             id="password"
             name="password"
             value={formData.password}
@@ -67,7 +74,16 @@ export default function RegisterForm({ onChange, formData, countries }) {
             onChange={(e) => onChange(e)}
             className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
+          <button
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-500 cursor-pointer"
+            onClick={onTogglePassword}
+          >
+            {showPasswordProp ? "Hide" : "Show"}
+          </button>
         </div>
+        <p className="mt-1 text-sm text-gray-500">
+          Password must be at least 6 characters long
+        </p>
       </div>
 
       {/* conform password */}
@@ -78,9 +94,9 @@ export default function RegisterForm({ onChange, formData, countries }) {
         >
           Confirm Password
         </label>
-        <div className="mt-1">
+        <div className="mt-1 relative">
           <input
-            type="password"
+            type={showPasswordProp ? "text" : "password"}
             id="conform-password"
             name="confirmPassword"
             autoComplete="new-password"
@@ -88,9 +104,24 @@ export default function RegisterForm({ onChange, formData, countries }) {
             value={formData.confirmPassword}
             onChange={(e) => onChange(e)}
             placeholder="Enter conform password"
-            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className={`appearance-none block w-full px-3 py-2 border ${
+              !passwordMatch && formData.confirmPassword
+                ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+            } 
+            rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm
+          `}
           />
+          <button
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-500 cursor-pointer"
+            onClick={onTogglePassword}
+          >
+            {showPasswordProp ? "Hide" : "Show"}
+          </button>
         </div>
+        {!passwordMatch && formData.confirmPassword && (
+          <p className="mt-1 text-xs text-red-600">Passwords do not match</p>
+        )}
       </div>
 
       {/* country */}

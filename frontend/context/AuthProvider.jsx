@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AuthContext from "./AuthContext";
 import api from "../config/axios";
 import { jwtDecode } from "jwt-decode";
@@ -54,7 +54,6 @@ export default function AuthProvider({ children }) {
       setAuthToken(token);
       const response = await api.get("/auth/me");
       setCurrentUser(response.data.user);
-      console.log(response.data.user);
 
       setIsAuthenticated(true);
     } catch (error) {
@@ -109,7 +108,21 @@ export default function AuthProvider({ children }) {
     }
   }
 
-  function logout() {}
+  function logout() {
+    setToken(null);
+    setCurrentUser(null);
+    setIsAuthenticated(false);
+    setAuthToken(null);
+  }
+
+  useEffect(() => {
+    if (token) {
+      checkTokenExpiration();
+      loadUser();
+    } else {
+      setLoading(false);
+    }
+  }, [checkTokenExpiration, loadUser, token]);
 
   return (
     <AuthContext.Provider
