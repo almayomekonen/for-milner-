@@ -1,9 +1,73 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { FaCamera, FaUser } from "react-icons/fa";
 import AuthContext from "../context/AuthContext";
+import api from "../config/axios";
 
 export default function ProfilePage() {
   const { currentUser, logout } = useContext(AuthContext);
+
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+
+  useEffect(() => {
+    let timer;
+    if (successMessage || uploadError) {
+      timer = setTimeout(() => {
+        setSuccessMessage(null);
+        setUploadError(null);
+      }, 2000);
+    }
+    return () => clearTimeout(timer);
+  }, [successMessage, uploadError]);
+
+  async function handleImageUpload(event) {
+    // upload file
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // validate file type
+    const validTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif"];
+    if (!validTypes.includes(file.type)) {
+      setUploadError(
+        "Please select a vaild image file (JPG, PNG, JPEG, or GIF)"
+      );
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError("Image size should be less than 5MB");
+    }
+
+    try {
+      setIsUploading(true);
+      setUploadError(null);
+
+      // maybe we need to change to (new Image)
+      const formData = new FormData();
+      formData.append("profileImage", file);
+
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await api.put("/auth/profile-image", formData, config);
+      if (response.data.success) {
+        currentUser.profileImage = response.data.profileImage;
+        setSuccessMessage("Profile image uploaded successfully");
+      }
+    } catch (error) {
+      setUploadError(
+        error.response || "Error uploading image, please try again."
+      );
+    } finally {
+      setIsUploading(false);
+    }
+  }
 
   if (!currentUser) {
     return (
@@ -16,13 +80,33 @@ export default function ProfilePage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-3xl mx-auto">
+        {successMessage && (
+          <div className="bg-green-100 border border-gray-400 text-green-700 px-4 py-3 rounded mb-4">
+            <p>{successMessage}</p>
+          </div>
+        )}
+
+        {uploadError && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <p>{uploadError}</p>
+          </div>
+        )}
         <div className="bg-white shadow rounded-lg">
           <div className="bg-gradient-to-r from-blue-500 to-indigo-600 h-32"></div>
 
           <div className="p-6 relative">
             <div className="absolute -top-16 left-6">
-              <div className="w-32 h-32 rounded-full border-4 border-white bg-gray-200 flex items-center justify-center text-gray-400">
-                <FaUser className="h-20 w-20" />
+              <div className="w-32 h-32 rounded-full border-4 border-white bg-gray-200 flex items-center justify-center overflow-hidden text-gray-400">
+                {currentUser.profileImage &&
+                currentUser.profileImage !== "default-profile.jpg" ? (
+                  <img
+                    src={`http://localhost:4000/uploads/profiles/${currentUser.profileImage}`}
+                    alt={currentUser.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <FaUser className="h-20 w-20" />
+                )}
               </div>
 
               <label
@@ -35,6 +119,8 @@ export default function ProfilePage() {
                   id="profile-image-upload"
                   accept="image/*"
                   className="hidden"
+                  onChange={handleImageUpload}
+                  disabled={isUploading}
                 />
               </label>
             </div>

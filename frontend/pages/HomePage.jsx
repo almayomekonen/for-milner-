@@ -64,14 +64,15 @@ export default function HomePage() {
               </h2>
 
               <p className="text-gray-600 text-xl mb-6">
-                Global Stories is a platform for sharing stories. Our community
-                brings together individuals from around the world to share their
-                experiences, cultural backgrounds, and learning journey.
+                Global Stories is a platform we have built for sharing stories.
+                Our community brings together individuals from around the world
+                to share their experiences, cultural backgrounds, and learning
+                journeys.
               </p>
               <p className="text-gray-600 text-xl mb-6">
-                Whether you're a student, professional, or simply curious about
-                other cultures, our platform provides a space to connect, learn,
-                and grow together.
+                Whether you're a student, or simply curious about other
+                cultures, our platform provides a space to connect, learn, and
+                grow together.
               </p>
 
               <Link className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-md font-medium">
