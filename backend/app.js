@@ -1,13 +1,28 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const path = require("path");
 require("dotenv").config();
+const fs = require("fs");
 
 const userRoutes = require("./router/user-routes");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const uploadDir = path.join(__dirname, "uploads");
+const profilesDir = path.join(uploadDir, "profiles");
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
+
+if (!fs.existsSync(profilesDir)) {
+  fs.mkdirSync(profilesDir);
+}
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const PORT = process.env.PORT || 4000;
 
