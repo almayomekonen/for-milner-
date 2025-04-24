@@ -7,6 +7,10 @@ import RegisterPage from "../pages/Register/RegisterPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import AuthProvider from "../context/AuthProvider";
 import PrivateRoute from "../components/routing/PrivateRoute";
+import AboutPage from "../pages/AboutPage";
+import PostsPage from "../pages/PostsPage";
+import PostPage from "../pages/PostPage";
+import CreatePostPage from "../pages/CreatePostPage";
 
 export default function App() {
   return (
@@ -25,6 +29,17 @@ export default function App() {
                 element={
                   <PrivateRoute>
                     <ProfilePage />
+                  </PrivateRoute>
+                }
+              />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/posts" element={<PostsPage />} />
+              <Route path="/posts/:id" element={<PostPage />} />
+              <Route
+                path="/create-post"
+                element={
+                  <PrivateRoute>
+                    <CreatePostPage />
                   </PrivateRoute>
                 }
               />

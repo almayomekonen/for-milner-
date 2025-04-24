@@ -75,7 +75,10 @@ export default function HomePage() {
                 grow together.
               </p>
 
-              <Link className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-md font-medium">
+              <Link
+                to="/about"
+                className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-md font-medium"
+              >
                 Learn More About Us
               </Link>
             </div>

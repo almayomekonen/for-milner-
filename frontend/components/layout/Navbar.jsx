@@ -29,8 +29,20 @@ export default function Navbar() {
             >
               Home
             </Link>
+            <Link
+              to="/posts"
+              className="px-3 py-2 rounded-md text-md font-medium text-gray-700 hover:text-blue-800"
+            >
+              Stories
+            </Link>
             {isAuthenticated ? (
               <>
+                <Link
+                  to="/create-post"
+                  className="px-3 py-2 rounded-md text-md font-medium text-gray-700 hover:text-blue-800"
+                >
+                  Create Story
+                </Link>
                 <Link
                   to="/profile"
                   className="px-3 py-2 rounded-md text-md font-medium text-gray-700 hover:text-blue-800"
@@ -80,24 +92,48 @@ export default function Navbar() {
           >
             Home
           </Link>
+
           <Link
-            to="/profile"
+            to="/posts"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
           >
-            Profile
+            Stories
           </Link>
-          <Link
-            to="/login"
-            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
-          >
-            Login
-          </Link>
-          <Link
-            to="/register"
-            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
-          >
-            Register
-          </Link>
+
+          {isAuthenticated ? (
+            <>
+              <Link
+                to="/create-story"
+                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+              >
+                Create Story
+              </Link>
+              <Link
+                to="/profile"
+                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+              >
+                Profile
+              </Link>
+              <span className="block px-3 py-2 text-gray-700">
+                Hello,{currentUser.name.split(" ")[0]}
+              </span>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+              >
+                Register
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>
