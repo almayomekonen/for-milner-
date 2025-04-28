@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { FaCamera, FaUser } from "react-icons/fa";
 import AuthContext from "../context/AuthContext";
 import api from "../config/axios";
+import UserPosts from "../components/posts/UserPosts";
 
 export default function ProfilePage() {
   const { currentUser, logout } = useContext(AuthContext);
@@ -158,6 +159,8 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
+
+        <UserPosts />
       </div>
     </div>
   );

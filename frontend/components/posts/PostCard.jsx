@@ -75,7 +75,9 @@ export default function PostCard({ post }) {
 
       <div className="p-4">
         <div className="flex justify-between items-start mb-2">
-          <span className="text-xs text-gray-500">{post.category}</span>
+          <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+            {post.category}
+          </span>
           <span className="text-xs text-gray-500">
             {formatDate(post.createdAt)}
           </span>

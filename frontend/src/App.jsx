@@ -35,14 +35,7 @@ export default function App() {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/posts" element={<PostsPage />} />
               <Route path="/posts/:id" element={<PostPage />} />
-              <Route
-                path="/create-post"
-                element={
-                  <PrivateRoute>
-                    <CreatePostPage />
-                  </PrivateRoute>
-                }
-              />
+              <Route path="/create-post" element={<CreatePostPage />} />
 
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
