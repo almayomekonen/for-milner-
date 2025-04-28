@@ -1,4 +1,6 @@
-export default function CreatePostView({
+import React from "react";
+
+const CreatePostView = ({
   formData,
   handleChange,
   imagePreview,
@@ -8,7 +10,7 @@ export default function CreatePostView({
   loading,
   error,
   images,
-}) {
+}) => {
   return (
     <div className="max-w-3xl mx-auto p-4 bg-white rounded-lg shadow">
       <h2 className="text-2xl font-bold mb-6">Share Your Story</h2>
@@ -51,7 +53,6 @@ export default function CreatePostView({
             value={formData.category}
             onChange={handleChange}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            required
           >
             <option value="Culture">Culture</option>
             <option value="Tech">Tech</option>
@@ -75,7 +76,6 @@ export default function CreatePostView({
             value={formData.language}
             onChange={handleChange}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            required
           />
         </div>
 
@@ -111,11 +111,11 @@ export default function CreatePostView({
             accept="image/*"
             multiple
             onChange={handleImageChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 cursor-pointer"
             disabled={images.length >= 5}
           />
           <p className="text-sm text-gray-500 mt-1">
-            You can upload up to 5 images (JPG, PNG ,JPEG, or GIF)
+            You can upload up to 5 images (JPG, PNG, or GIF)
           </p>
 
           {imagePreview.length > 0 && (
@@ -127,13 +127,12 @@ export default function CreatePostView({
                     alt={`Preview ${index + 1}`}
                     className="w-20 h-20 object-cover rounded"
                   />
-
                   <button
                     type="button"
                     onClick={() => removeImage(index)}
-                    className="absolute top-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-sm"
+                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs cursor-pointer"
                   >
-                    X
+                    ×
                   </button>
                 </div>
               ))}
@@ -143,9 +142,9 @@ export default function CreatePostView({
 
         <div className="flex justify-end">
           <button
-            className="bg-blue-600 hover:bg-blue-700 cursor-pointer text-white font-medium py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
             type="submit"
             disabled={loading}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 cursor-pointer"
           >
             {loading ? "Posting..." : "Post Story"}
           </button>
@@ -153,4 +152,6 @@ export default function CreatePostView({
       </form>
     </div>
   );
-}
+};
+
+export default CreatePostView;
