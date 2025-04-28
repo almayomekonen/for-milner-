@@ -1,14 +1,3 @@
-// Create Post
-// getAllPost
-// getPostByCategory
-// getPopularPosts
-// getPOSTBy Id
-// getPostUser
-// deletePost
-// update Post
-// addComment
-// addLike
-
 const Post = require("../models/Post");
 const User = require("../models/User");
 
