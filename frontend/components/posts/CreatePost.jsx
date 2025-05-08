@@ -1,9 +1,9 @@
-import { useState } from "react";
-import CreatePostView from "./CreatePostView";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../config/axios";
+import CreatePostView from "./CreatePostView";
 
-export default function CreatePost() {
+const CreatePost = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -13,7 +13,7 @@ export default function CreatePost() {
     language: "English",
   });
 
-  // images state
+  // Image handling state
   const [images, setImages] = useState([]);
   const [imagePreview, setImagePreview] = useState([]);
 
@@ -21,21 +21,21 @@ export default function CreatePost() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // event handlers
+  // Event handlers
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  function handleChange(event) {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-  }
-
-  function handleImageChange(event) {
-    const files = Array.from(event.target.files);
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
     setImages([...images, ...files]);
 
+    // Create previews
     const newPreviews = files.map((file) => URL.createObjectURL(file));
     setImagePreview([...imagePreview, ...newPreviews]);
-  }
+  };
 
-  function removeImage(index) {
+  const removeImage = (index) => {
     const updatedImages = [...images];
     const updatedPreviews = [...imagePreview];
 
@@ -44,10 +44,10 @@ export default function CreatePost() {
 
     setImages(updatedImages);
     setImagePreview(updatedPreviews);
-  }
+  };
 
-  async function handleSubmit(event) {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     if (!formData.title || !formData.content) {
       setError("Title and content are required");
@@ -64,12 +64,14 @@ export default function CreatePost() {
         return;
       }
 
+      // Create form data
       const postFormData = new FormData();
       postFormData.append("title", formData.title);
       postFormData.append("content", formData.content);
       postFormData.append("category", formData.category);
       postFormData.append("language", formData.language);
 
+      // Append images
       images.forEach((image) => {
         postFormData.append("images", image);
       });
@@ -86,12 +88,12 @@ export default function CreatePost() {
       if (response.data.success) {
         navigate(`/posts/${response.data.data._id}`);
       }
-    } catch (error) {
-      setError(error.response.data.message || "Error creating post");
+    } catch (err) {
+      setError(err.response?.data?.message || "Error creating post");
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <CreatePostView
@@ -106,4 +108,6 @@ export default function CreatePost() {
       images={images}
     />
   );
-}
+};
+
+export default CreatePost;

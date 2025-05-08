@@ -9,7 +9,7 @@ export default function LoginPage() {
     email: "",
     password: "",
   });
-  const [showPassword, setShowPassword] = useState(false);
+
   const { login, isAuthenticated, error, setError } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -36,7 +36,7 @@ export default function LoginPage() {
 
     const success = await login(email, password);
     if (success) {
-      navigate("/profile");
+      navigate("/");
     }
   }
 

@@ -10,7 +10,7 @@ export default function AboutPage() {
       role: "Project Lead & Educator",
       image: "/images/mekons.webp",
       description:
-        "Started Global stories to connect students across different cultures.",
+        "Started Aardvark Stories to connect students across different cultures.",
       quote: "`You know why? Because of the UI` Almayo Mekonen",
     },
     {
@@ -19,7 +19,7 @@ export default function AboutPage() {
       role: "Web Developer",
       image: "/images/josh.jpg",
       description:
-        "Started Global stories to connect students across different cultures.",
+        "Started Aardvark Stories to connect students across different cultures.",
       quote: "Triple === Equal",
     },
     {
@@ -28,7 +28,7 @@ export default function AboutPage() {
       role: "Web Developer",
       image: "/images/ilan.jpg",
       description:
-        "Started Global stories to connect students across different cultures.",
+        "Started Aardvark Stories to connect students across different cultures.",
       quote: "",
     },
     {
@@ -37,7 +37,7 @@ export default function AboutPage() {
       role: "Web Developer",
       image: "/images/shaya.jpg",
       description:
-        "Started Global stories to connect students across different cultures.",
+        "Started Aardvark Stories to connect students across different cultures.",
       quote: "",
     },
   ];
@@ -47,7 +47,7 @@ export default function AboutPage() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-            The Team Behind Global Stories
+            The Team Behind Aardvark Stories
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             We're a passionate group of educators and students who believe in

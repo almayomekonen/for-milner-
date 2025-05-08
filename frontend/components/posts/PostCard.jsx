@@ -2,9 +2,9 @@ import { useContext, useState } from "react";
 import AuthContext from "../../context/AuthContext";
 import api from "../../config/axios";
 import { Link } from "react-router-dom";
+import useToast from "../../hooks/useToast";
 import {
   FaArrowRight,
-  FaComment,
   FaHeart,
   FaRegComment,
   FaRegHeart,
@@ -12,6 +12,7 @@ import {
 
 export default function PostCard({ post }) {
   const { currentUser } = useContext(AuthContext);
+  const toast = useToast();
   const [likes, setLikes] = useState(
     post.likes.some((like) => like.user === currentUser?._id)
   );
@@ -31,8 +32,12 @@ export default function PostCard({ post }) {
       };
 
       await api.put(`/posts/${post._id}/like`, {}, config);
+
+      const wasLiked = likes;
       setLikes(!likes);
-      setLikesCount(likes ? likesCount - 1 : likes + 1);
+      setLikesCount(likes ? likesCount - 1 : likesCount + 1);
+
+      toast.like(wasLiked ? "removed" : "added", post.title);
     } catch (error) {
       console.error("Error liking post: ", error);
     }
@@ -55,7 +60,6 @@ export default function PostCard({ post }) {
           alt={post.user.name}
           className="w-10 h-10 rounded-full object-cover mr-3"
         />
-
         <div>
           <p className="text-sm font-medium text-gray-500">{post.user.name}</p>
           <p className="text-xs text-gray-500">{post.user.country}</p>

@@ -7,7 +7,7 @@ export default function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState(localStorage.getItem("token"));
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
 
   // token provider
@@ -23,7 +23,7 @@ export default function AuthProvider({ children }) {
 
   const checkTokenExpiration = useCallback(() => {
     if (token) {
-      setLoading();
+      setLoading(true);
       try {
         const decode = jwtDecode(token);
         const currentTime = Date.now() / 1000;
