@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const Post = require("../models/Post");
 const bcrypt = require("bcrypt");
 
 function generateToken(id) {
@@ -137,6 +138,28 @@ exports.uploadImageProfile = async (req, res) => {
     });
   } catch (error) {
     console.error("Profile image error:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+exports.getUserStats = async (req, res) => {
+  try {
+    const totalUsers = await User.countDocuments();
+    const uniqueCountries = await User.distinct("country").then(
+      (countries) =>
+        countries.filter((country) => country && country.trim() !== "").length
+    );
+
+    const totalPosts = await Post.countDocuments();
+
+    res.status(200).json({
+      success: true,
+      totalPosts,
+      totalUsers,
+      uniqueCountries,
+    });
+  } catch (error) {
+    console.error("Error getting user stats :", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
