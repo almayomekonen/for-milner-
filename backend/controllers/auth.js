@@ -163,3 +163,58 @@ exports.getUserStats = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+exports.getMapData = async (req, res) => {
+  try {
+    const usersByCountry = await User.aggregate([
+      {
+        $match: {
+          country: { $ne: null, $ne: "" },
+        },
+      },
+
+      {
+        $group: {
+          _id: "$country",
+          count: { $sum: 1 },
+          userIds: { $push: "$_id" },
+        },
+      },
+
+      {
+        $sort: { count: -1 },
+      },
+
+      {
+        $project: {
+          name: "$_id",
+          count: 1,
+          userIds: 1,
+          _id: 0,
+        },
+      },
+    ]);
+
+    const results = await Promise.all(
+      usersByCountry.map(async (country) => {
+        const post = await Post.findOne({
+          user: { $in: country.userIds },
+        }).sort({ createdAt: -1 });
+
+        return {
+          name: country.name,
+          count: country.count,
+          postId: post ? post._id : null,
+        };
+      })
+    );
+
+    res.json({
+      success: true,
+      countries: results,
+    });
+  } catch (error) {
+    console.error("Error getting country data :", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};

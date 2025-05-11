@@ -7,6 +7,7 @@ const fs = require("fs");
 
 const authRoutes = require("./router/user-routes");
 const postRoutes = require("./router/post-routes");
+const mapRoutes = require("./router/map-routes");
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api", mapRoutes);
 
 app.get("/", (req, res) => {
   res.send("Global Stories API is running");
