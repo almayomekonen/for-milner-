@@ -20,6 +20,7 @@ import AboutPage from "../pages/AboutPage";
 import Navbar from "../components/layout/Navbar";
 import PrivateRoute from "../components/routing/PrivateRoute";
 import ScrollToTop from "../components/ScrollToTop";
+import MapPage from "../pages/MapPage";
 
 function App() {
   return (
@@ -42,6 +43,8 @@ function App() {
                 }
               />
               <Route path="/about" element={<AboutPage />} />
+              <Route path="/map" element={<MapPage />} />
+
               <Route path="/posts" element={<PostsPage />} />
               <Route path="/posts/:id" element={<PostPage />} />
               <Route

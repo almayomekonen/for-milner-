@@ -5,8 +5,9 @@ import {
   FaRegComment,
   FaTrash,
   FaEdit,
+  FaChevronDown,
 } from "react-icons/fa";
-
+import { useState } from "react";
 export default function PostDetailView({
   post,
   loading,
@@ -24,6 +25,7 @@ export default function PostDetailView({
   handleImageChange,
   handleCommentDelete,
 }) {
+  const [showAllComments, setShowAllComments] = useState(false);
   if (loading) {
     return (
       <div className="flex justify-center items-center py-20">
@@ -50,10 +52,10 @@ export default function PostDetailView({
   }
 
   return (
-    <div className="max-w-4xl mx-auto sm:px-0 py-8">
+    <div className="max-w-4xl mx-auto py-8 ">
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <div className="p-6 border-b">
-          <div className="flex justify-between mb-4">
+        <div className="border-b">
+          <div className="flex justify-between lg:m-2">
             <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
               {post.category}
             </span>
@@ -74,7 +76,7 @@ export default function PostDetailView({
                   : `http://localhost:4000/uploads/profiles/${post.user.profileImage}`
               }
               alt={post.user.name}
-              className="w-12 h-12 rounded-full mr-4 object-cover"
+              className="w-10 h-10 rounded-full mr-4 object-cover"
             />
 
             <div>
@@ -101,7 +103,7 @@ export default function PostDetailView({
                     <button
                       key={index}
                       onClick={() => handleImageChange(index)}
-                      className={`h-2 w-2 rounded-full ${
+                      className={`h-3 w-3 rounded-full ${
                         currentImage === index ? "bg-white" : "bg-gray-400"
                       }`}
                     ></button>
@@ -112,7 +114,7 @@ export default function PostDetailView({
           </div>
         )}
 
-        <div className="md:p-6 p-2">
+        <div className="md:p-6 sm:p-4">
           <div className="prose max-w-none mb-6">
             <p className="whitespace-pre-line">{post.content}</p>
           </div>
@@ -183,7 +185,7 @@ export default function PostDetailView({
                     <textarea
                       value={comment}
                       onChange={(event) => setComment(event.target.value)}
-                      placeholder="Write a coment..."
+                      placeholder="Write a comment..."
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-400"
                       rows="2"
                       required
@@ -206,12 +208,13 @@ export default function PostDetailView({
                 </Link>
               </div>
             )}
-
             {renderComments(
               post.comments,
               formatDate,
               currentUser,
-              handleCommentDelete
+              handleCommentDelete,
+              setShowAllComments,
+              showAllComments
             )}
           </div>
         </div>
@@ -224,15 +227,25 @@ function renderComments(
   comments,
   formatDate,
   currentUser,
-  handleCommentDelete
+  handleCommentDelete,
+  setShowAllComments,
+  showAllComments
 ) {
   if (comments.length === 0) {
     return <p className="text-gray-500">No comments yet, be the first!</p>;
   }
 
+  const sortedComments = [...comments].sort(
+    (a, b) => new Date(b.date) - new Date(a.date)
+  );
+
+  const commentsToShow = showAllComments
+    ? sortedComments
+    : sortedComments.slice(0, 2);
+
   return (
     <div className="space-y-4">
-      {comments.map((comment) => (
+      {commentsToShow.map((comment) => (
         <div key={comment._id} className="flex items-start">
           <img
             src={
@@ -243,31 +256,48 @@ function renderComments(
             alt={comment.name}
             className="w-10 h-10 rounded-full mr-3 object-cover"
           />
-
           <div className="flex-grow">
             <div className="bg-gray-50 rounded-lg p-3">
-              <div className="flex justify-between space-x-2 mb-1">
+              <div className="flex justify-between mb-1">
                 <span className="font-semibold text-sm">{comment.name}</span>
-                <span className="text-xs text-gray-500">
+                <span className="text-gray-500 text-xs ">
                   {formatDate(comment.date)}
                 </span>
               </div>
               <div className="flex justify-between">
                 <p className="text-gray-700">{comment.text}</p>
-                {currentUser && currentUser._id && comment.user && (
-                  <button
-                    onClick={() => handleCommentDelete(comment._id)}
-                    className="text-gray-400 hover:text-red-500 cursor-pointer"
-                    aria-label="Delete comment"
-                  >
-                    <FaTrash size={14} />
-                  </button>
-                )}
+                {currentUser &&
+                  currentUser._id === (comment.user._id || comment.user) && (
+                    <button
+                      onClick={() => handleCommentDelete(comment._id)}
+                      className="text-gray-400 hover:text-red-500"
+                      aria-label="Delete comment"
+                    >
+                      <FaTrash size={14} />
+                    </button>
+                  )}
               </div>
             </div>
           </div>
         </div>
       ))}
+      {sortedComments.length > 2 && (
+        <div className="pt-2 text-center">
+          <button
+            className="flex cursor-pointer items-center mx-auto text-blue-600 hover:text-blue-800 focus:outline-none gap-1"
+            onClick={() => setShowAllComments(!showAllComments)}
+          >
+            {showAllComments
+              ? "Show less"
+              : `Show more (${sortedComments.length - 2} more)`}
+            <FaChevronDown
+              className={`transform transition-transform ${
+                showAllComments ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
